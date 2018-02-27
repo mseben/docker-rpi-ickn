@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+
+  influx-db:
+    build: influx-db
+    ports:
+      - "8086:8086"
+    volumes:
+      - /var/lib/influxdb/:${PREFIX_DIR}/var/lib/influxdb/
+
+  kapacitor:
+    build: kapacitor
+    volumes:
+      - /var/log/kapacitor/:${PREFIX_DIR}/var/log/kapacitor/
+    links:
+      - influx-db
+
+  chronograf:
+    build: chronograf
+    ports:
+      - "8888:8888"
+    volumes:
+      - /var/lib/chronograf/:${PREFIX_DIR}/var/lib/chronograf/
+    links:
+      - influx-db
+
+  nginx:
+    build: nginx
+    ports:
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /etc/ssl/certs/:${PREFIX_DIR}/etc/ssl/certs/:ro
+      - /etc/nginx/conf.d/:${PREFIX_DIR}/etc/nginx/conf.d/:ro
+      - /var/log/nginx/:${PREFIX_DIR}/var/log/nginx/
+    command: nginx
+    links:
+      - influx-db
