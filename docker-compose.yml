@@ -2,8 +2,8 @@ version: "3"
 
 services:
 
-  influx-db:
-    build: influx-db
+  influxdb:
+    build: influxdb
     ports:
       - "8086:8086"
     volumes:
@@ -14,7 +14,7 @@ services:
     volumes:
       - /var/log/kapacitor/:${PREFIX_DIR}/var/log/kapacitor/
     links:
-      - influx-db
+      - influxdb
 
   chronograf:
     build: chronograf
@@ -23,7 +23,7 @@ services:
     volumes:
       - /var/lib/chronograf/:${PREFIX_DIR}/var/lib/chronograf/
     links:
-      - influx-db
+      - influxdb
 
   nginx:
     build: nginx
@@ -36,4 +36,4 @@ services:
       - /var/log/nginx/:${PREFIX_DIR}/var/log/nginx/
     command: nginx
     links:
-      - influx-db
+      - influxdb
