@@ -31,9 +31,8 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - /etc/ssl/certs/:${PREFIX_DIR}/etc/ssl/certs/:ro
-      - /etc/nginx/conf.d/:${PREFIX_DIR}/etc/nginx/conf.d/:ro
-      - /var/log/nginx/:${PREFIX_DIR}/var/log/nginx/
-    command: nginx
+      - ${PREFIX_DIR}/etc/nginx/ssl/:/etc/nginx/ssl/:ro
+      - ${PREFIX_DIR}/etc/nginx/conf.d/:/etc/nginx/conf.d/:ro
+      - ${PREFIX_DIR}/var/log/nginx/:/var/log/nginx/
     links:
       - influxdb
